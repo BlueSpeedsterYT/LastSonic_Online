@@ -7,7 +7,245 @@
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
-  <events/>
+  <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// create event
+
+//creation position
+if instance_exists(obj_checkpoint_controller) &amp;&amp; variable_instance_exists(obj_checkpoint_controller, "checkpoint")
+{
+    if obj_checkpoint_controller.checkpoint
+    {
+        x = obj_checkpoint_controller.x_checkpoint_pos
+        y = obj_checkpoint_controller.y_checkpoint_pos
+    }
+}
+
+instance_create(x,y,obj_player_camera); // Camera
+instance_create(x,y,obj_stagestat_controller);
+instance_create(x,y,obj_checkpoint_controller);
+instance_create(x,y,obj_stagetime);
+instance_create(x,y,obj_HUD_ingame);
+instance_create(x,y,obj_musiccontroller);
+instance_create(x,y,obj_stage_blackblank_fadeout);
+obj_stage_blackblank_fadeout.fadeout = true;
+
+//upixelH = shader_get_uniform(pixelOutShade,"pixelH");
+//upixelW = shader_get_uniform(pixelOutShade,"pixelW");
+
+//texelW = texture_get_texel_width(sprite_get_texture(sprite_index, 0));
+//texelH = texture_get_texel_height(sprite_get_texture(sprite_index, 0));
+
+gamepad_set_axis_deadzone(0,0.7);
+
+hsp = 0;
+vsp = 0;
+hspm = 6;
+hspl = 16;
+vspl = 16;
+
+jmp = -6.5;
+sjmp = -4;
+djmp = false; //variable for homing attack enabler
+djmp2 = false; //variable for air dash 
+
+acc = 0.046875;
+dcc = 0.5;
+frc = 0.046875;
+grv = 0.21875;
+
+ground = false;
+
+acos = 1;
+asin = 0;
+
+angle = 0;
+action = 0;
+adrag = 0.96875;
+bfr = 0.023475;
+bdcc = 0.1484375;
+vfr = 0.21875;
+xdir = 1;
+xlayer = 0;
+
+sp = 0;
+spot = 0;
+
+canMove = true; //making Sonic able to move, used in title card animation for making Sonic still
+canHit = true;  //making Sonic able to take damage from enemies
+hitInvincible = 0 //a timer variable for post damage invincibility
+
+canGrind = true;    //variable for making Sonic grind on rail
+dead = false;
+
+rings = 0;
+
+
+image_alpha = 1;
+image_index = 0;
+sprite_index = 0;
+image_speed = 0;
+
+draw_yPos = 0;
+
+last_action = 0;
+sprp = spr_Sonic_stand
+frame = 0;
+image_i = 0;
+
+
+//custom alarm variables, I used them instead of actual alarms
+
+alarm0 = 0
+alarm1 = 0
+alarm2 = 0
+alarm3 = 0
+alarm4 = 0
+
+//input mode
+input_mode = 0
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>x_begin = x
+y_begin = y
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// step event
+
+if alarm0 &gt; 0
+{
+    alarm0 -= 1
+    if alarm0 == 1
+        grv = 0.21875
+}
+
+if alarm1 &gt; 0
+{
+    alarm1 -= 1
+    if alarm1 == 1
+        action = 0
+}
+
+if alarm2 &gt; 0
+{
+    alarm2 -= 1
+    if alarm2 == 1 &amp;&amp; action == 29
+    {
+        action = 0
+        hsp = 0
+        vsp = 0
+        grv = 0.21875;
+    }
+}
+
+//death
+if alarm3 &gt; 0
+{
+    alarm3 -= 1
+    if alarm3 == 1
+    {
+        var blankscreen = instance_create(x,y,obj_blackblank_fadein);
+        blankscreen.fadein = true
+    }
+}
+
+
+//check input
+if keyboard_check(vk_anykey)
+    input_mode = 0
+if check_xbox_controller()
+    input_mode = 1
+
+p_physics();
+p_move();
+
+if collision_circle(x,y,17,obj_t_background,true,false) // Background
+{
+    xlayer = 0;
+}
+
+if collision_circle(x,y,17,obj_t_foreground,true,false) // Foreground
+{
+    xlayer = 1;
+}
+
+if collision_circle(x,y,17,obj_t_switch,true,false) // Switch
+{
+    if hsp &gt; 0 &amp;&amp; ground
+    xlayer = 0;
+    if hsp &lt; 0 &amp;&amp; ground
+    xlayer = 1;
+}
+
+//post-damage invincibility 
+if hitInvincible &gt; 0 
+{
+    hitInvincible -= 1
+    if hitInvincible == 1
+        canHit = true
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+  </events>
   <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>

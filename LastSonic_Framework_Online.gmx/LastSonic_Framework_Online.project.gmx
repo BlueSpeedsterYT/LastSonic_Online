@@ -228,6 +228,7 @@
     <objects name="master Players">
       <object>objects\obj_Sonic</object>
       <object>objects\obj_Sonic_other</object>
+      <object>objects\par_player</object>
       <objects name="FX">
         <object>objects\obj_grindspark</object>
         <object>objects\obj_stompfx</object>
@@ -237,7 +238,6 @@
       <object>objects\obj_homable</object>
       <object>objects\obj_hominglock</object>
       <object>objects\obj_hurting_object</object>
-      <object>objects\par_player</object>
     </objects>
     <objects name="master Collisions">
       <object>objects\obj_walls</object>
@@ -326,8 +326,8 @@
     <rooms name="Startup">
       <room>rooms\rm_Startup</room>
       <room>rooms\rm_Init</room>
-      <room>rooms\rm_Login</room>
       <room>rooms\rm_Controller_Warning</room>
+      <room>rooms\rm_Login</room>
     </rooms>
     <rooms name="Zones">
       <rooms name="Test">

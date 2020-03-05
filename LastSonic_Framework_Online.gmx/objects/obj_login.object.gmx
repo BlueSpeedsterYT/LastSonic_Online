@@ -25,7 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>gms_show_login()
+            <string>gms_show_set_allowguest(true)
+gms_show_login();
+
+gms_team_set_max(2);
 </string>
           </argument>
         </arguments>
@@ -48,7 +51,16 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>room_goto_next();
+            <string>gms_chat_toggle(1);
+gms_chat ( " has logged in, have fun out there!", c_green)
+
+gms_chat_bind_view(0, cp_bottom, 50);
+gms_chat_set_font(global.test_font)
+gms_chat_colors(c_white,make_color_rgb(0,51,25),0.65)
+
+room_goto_next();
+
+
 </string>
           </argument>
         </arguments>
